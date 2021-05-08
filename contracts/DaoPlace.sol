@@ -13,7 +13,7 @@ contract DaoPlace is Ownable {
     Proposal proposal;
     
     
-    //
+    //Dao data
     struct DaoInfo {
         IERC20 Daotoken;
         address retailer;
@@ -26,7 +26,7 @@ contract DaoPlace is Ownable {
 
     DaoInfo[] public daoInfo;
     
-    
+    //user data
     struct User {
         address id;
         uint256 StakingBalance;
@@ -48,7 +48,7 @@ contract DaoPlace is Ownable {
         _;
     }
     
-    
+    // only participant
     modifier onlyParticipant(uint256 _daoId) {
         require(isParticipant(msg.sender, _daoId) == true, "you are not allow");
         _;
@@ -93,7 +93,7 @@ contract DaoPlace is Ownable {
         
     }
     
-    
+    // get index of a user in a dao
     function getIndex(uint256 _daoId) public view returns (uint256) {
         DaoInfo storage dao = daoInfo[_daoId];
         for(uint256 i=0; i<dao.users.length; i++){
@@ -103,7 +103,7 @@ contract DaoPlace is Ownable {
         }
     }
     
-    
+    // quit the dao
     function quit(uint256 _daoId) public {
         DaoInfo storage dao = daoInfo[_daoId];
         require(isParticipant(msg.sender, _daoId) == true, "you're not part of this trip");
@@ -114,7 +114,7 @@ contract DaoPlace is Ownable {
         dao.users.pop();
     }
     
-    
+    // determine if the address is part of a dao
     function isParticipant(address _participant, uint256 _daoId) public view returns (bool) {
         DaoInfo storage dao = daoInfo[_daoId];
         if(dao.users.length == 0) return false;
@@ -127,7 +127,7 @@ contract DaoPlace is Ownable {
         return false;
     }
     
-    
+    // function vote a proposal
     function Vote(uint _daoId, uint256 _id, bool voteCast) external onlyParticipant(_daoId){
         DaoInfo storage dao = daoInfo[_daoId];
         proposal = dao.proposals[_id];

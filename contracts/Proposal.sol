@@ -44,7 +44,7 @@ contract Proposal is ChainlinkClient {
         noCount = 0;
         votingLive = false;
     }
-    
+    // launch a vote time with chainlink oracle
     function launchVote(uint256 timeAllow) public {
         Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
         req.addUint("until", block.timestamp + timeAllow * 1 days);
@@ -56,7 +56,7 @@ contract Proposal is ChainlinkClient {
         votingLive = false;
     }
     
-    
+    //join the participants array
     function joinVote() public {
         participants.push(msg.sender);
     }
@@ -73,15 +73,18 @@ contract Proposal is ChainlinkClient {
         voters[msg.sender] = true;
    }
    
-   
+   // get list of all voters
    function getParticipant() public view returns (address[] memory){
        return participants;
    }
     
+
+    // get all vote count
     function getVote() public view returns (uint256 yesVote, uint256 noVote) {
         return (yesCount, noCount);
     }
     
+    // determine if address have voted or not
     function haveYouVoted() public view returns (bool) {
       return voters[msg.sender];
     }
