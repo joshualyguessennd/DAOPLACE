@@ -1,0 +1,1 @@
+This is a simple smart contract system that allow user to create their own DAO and organize vote using chainlink 
